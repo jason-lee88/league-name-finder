@@ -27,7 +27,7 @@ const App = () => {
       );
       const word = await wordRes.json();
       const data = await fetch(
-        `http://localhost:3001/availability?username=${word.word}&years=${years}&months=${months}&days=${days}`
+        `${process.env.REACT_APP_BACKEND_PROXY_API_URL}/availability?username=${word.word}&years=${years}&months=${months}&days=${days}`
       );
       const jsonData = await data.json();
       setUserData((userData) => [...userData, jsonData]);
