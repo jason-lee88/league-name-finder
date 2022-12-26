@@ -1,0 +1,37 @@
+#app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #333333;
+  width: 100vw;
+  height: 100vh;
+}
+
+#header {
+  font-size: 48px;
+  color: #ffffff;
+  margin: 8px;
+}
+
+#header-description {
+  font-size: 20px;
+  color: #cccccc;
+}
+
+#get-usernames {
+  background-color: #6666ff;
+  color: white;
+  font-size: 36px;
+  padding: 10px;
+  border: 0;
+  border-radius: 15px;
+}
+
+#get-usernames:disabled {
+  background-color: #aaaaaa;
+}
+
+#get-usernames:enabled:hover {
+  cursor: pointer;
+  background-color: #7777ff;
+}

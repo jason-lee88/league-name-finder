@@ -1,0 +1,12 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  margin-top: 72px;
+}
+
+.section-header {
+  font-size: 32px;
+  color: #ffffff;
+}

@@ -1,0 +1,14 @@
+.entry-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 50vw;
+}
+
+.field {
+  width: 50%;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+}
