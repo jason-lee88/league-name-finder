@@ -2,6 +2,7 @@
   "name": "league-name-finder",
   "author": "Jason Lee",
   "version": "1.0.0",
+  "homepage": "https://league-name-finder.onrender.com/",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
