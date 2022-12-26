@@ -1,15 +1,15 @@
 import "./TimeAttribute.css";
 
-const TimeAttribute = ({ title, setAttribute }) => {
+const TimeAttribute = ({ title, setAttribute, defaultVal }) => {
   return (
     <div className="attribute-container">
       <input
-        placeholder="0"
+        placeholder={defaultVal}
         onChange={(e) => {
           if (e.target.value.length > 0) {
             setAttribute(e.target.value);
           } else {
-            setAttribute(0);
+            setAttribute(defaultVal);
           }
         }}
         className="attribute-input"

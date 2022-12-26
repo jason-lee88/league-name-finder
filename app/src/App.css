@@ -25,6 +25,7 @@
   padding: 10px;
   border: 0;
   border-radius: 15px;
+  width: 30%;
 }
 
 #get-usernames:disabled {

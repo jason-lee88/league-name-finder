@@ -9,6 +9,7 @@ const {
   intervalToDuration,
   addMilliseconds,
   formatDuration,
+  add,
 } = require("date-fns");
 
 const apiKey = process.env.RIOT_API_KEY;
@@ -34,6 +35,10 @@ app.use(cors());
 
 app.get("/availability", async (req, res) => {
   const username = req.query.username;
+  const years = req.query.years;
+  const months = req.query.months;
+  const days = req.query.days;
+
   const user = await riotFetch(
     `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${username}`
   );
@@ -41,6 +46,7 @@ app.get("/availability", async (req, res) => {
     return res.status(200).send({
       username: username,
       available: true,
+      withinTime: true,
     });
   }
   const resUsername = user.name;
@@ -87,18 +93,18 @@ app.get("/availability", async (req, res) => {
   //   );
   // }
 
-  // Determine if the end timestamp of the player's last game was in League or TFT
-  let trueMatchEndDate;
-  if (leagueMatchEndDate && tftMatchEndDate) {
-    trueMatchEndDate =
-      compareAsc(leagueMatchEndDate, tftMatchEndDate) >= 0
-        ? leagueMatchEndDate
-        : tftMatchEndDate;
-  } else if (!tftMatchEndDate) {
-    trueMatchEndDate = leagueMatchEndDate;
-  } else {
-    trueMatchEndDate = tftMatchEndDate;
-  }
+  // // Determine if the end timestamp of the player's last game was in League or TFT
+  // let trueMatchEndDate;
+  // if (leagueMatchEndDate && tftMatchEndDate) {
+  //   trueMatchEndDate =
+  //     compareAsc(leagueMatchEndDate, tftMatchEndDate) >= 0
+  //       ? leagueMatchEndDate
+  //       : tftMatchEndDate;
+  // } else if (!tftMatchEndDate) {
+  //   trueMatchEndDate = leagueMatchEndDate;
+  // } else {
+  //   trueMatchEndDate = tftMatchEndDate;
+  // }
 
   // Get the number of milliseconds of inactivity for an account to be inactive
   const oneMonth = 2629800000;
@@ -113,16 +119,24 @@ app.get("/availability", async (req, res) => {
     return res.status(200).send({
       username: resUsername,
       available: true,
+      withinTime: true,
     });
   }
+
+  const expireDate = addMilliseconds(revisionDate, threshold);
 
   return res.status(200).send({
     username: resUsername,
     available: false,
+    withinTime:
+      compareAsc(
+        add(now, { years: years, months: months, days: days }),
+        expireDate
+      ) >= 0,
     remainingTime: formatDuration(
       intervalToDuration({
         start: now,
-        end: addMilliseconds(revisionDate, threshold),
+        end: expireDate,
       }),
       { format: ["years", "months", "weeks", "days"] }
     ),

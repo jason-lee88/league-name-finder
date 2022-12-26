@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   width: 50vw;
+  margin-top: 24px;
 }
 
 .field {
@@ -11,4 +12,8 @@
   color: white;
   font-size: 16px;
   text-align: center;
+}
+
+.available {
+  color: #33cc33;
 }

@@ -5,19 +5,34 @@ import TimePicker from "./components/TimePicker/TimePicker";
 import Results from "./components/Results/Results";
 
 const App = () => {
-  const [years, setYears] = useState(0);
+  const [years, setYears] = useState(3);
   const [months, setMonths] = useState(0);
   const [days, setDays] = useState(0);
   const [userData, setUserData] = useState();
+  const [loading, setLoading] = useState();
+  const numNames = 20;
 
   const fetchUsernames = async () => {
-    const data = await fetch(
-      "http://localhost:3001/availability?username=meimei"
-    );
-    const jsonData = await data.json();
-    const newUserData = [];
-    newUserData.push(jsonData);
-    setUserData(newUserData);
+    setUserData([]);
+    setLoading(true);
+    for (let i = 0; i < numNames; i++) {
+      const wordRes = await fetch(
+        "https://api.api-ninjas.com/v1/randomword?type=noun",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-Api-Key": process.env.REACT_APP_API_NINJAS_KEY,
+          },
+        }
+      );
+      const word = await wordRes.json();
+      const data = await fetch(
+        `http://localhost:3001/availability?username=${word.word}&years=${years}&months=${months}&days=${days}`
+      );
+      const jsonData = await data.json();
+      setUserData((userData) => [...userData, jsonData]);
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -25,6 +40,7 @@ const App = () => {
     if (!getUsernamesButton) return;
 
     getUsernamesButton.disabled =
+      loading ||
       isNaN(years) ||
       years < 0 ||
       isNaN(months) ||
@@ -33,7 +49,7 @@ const App = () => {
       days < 0
         ? true
         : false;
-  }, [years, months, days]);
+  }, [years, months, days, loading]);
 
   return (
     <div id="app-container">
@@ -49,7 +65,7 @@ const App = () => {
           setDays={setDays}
         />
         <button id="get-usernames" onClick={fetchUsernames}>
-          Get Usernames
+          {!loading ? "Get Usernames" : "Loading..."}
         </button>
       </Section>
       {userData && (

@@ -4,16 +4,17 @@ import ResultsEntry from "./ResultsEntry/ResultsEntry";
 const Results = ({ data }) => {
   return (
     <div id="results-container">
-      {data.map((user) => {
-        return (
-          <ResultsEntry
-            key={user.username}
-            username={user.username}
-            available={user.available}
-            remainingTime={user.remainingTime}
-          />
-        );
-      })}
+      {data.map(
+        (user) =>
+          user.withinTime && (
+            <ResultsEntry
+              key={user.username}
+              username={user.username}
+              available={user.available}
+              remainingTime={user.remainingTime}
+            />
+          )
+      )}
     </div>
   );
 };
